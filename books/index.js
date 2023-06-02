@@ -32,8 +32,16 @@ const books = [
 ];
 
 const express = require('express')
+const swaggerUi = require('swagger-ui-express');
 const app = express()
 const port = 3005
+const fs = require("fs")
+const YAML = require('yaml')
+
+const file  = fs.readFileSync('./swagger.yaml', 'utf8')
+const swaggerDocument = YAML.parse(file)
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/books', (request, response) => {
   response.json(books)
